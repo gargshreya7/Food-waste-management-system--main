@@ -1,35 +1,43 @@
 Food Waste Management System
 
-This is a Flask-based web application designed to reduce food waste by connecting food donors, NGOs, and administrators on a single platform. The system allows users to donate excess food, enables NGOs to view and pick up donations, and provides admins with tools to manage and monitor all activities.
+This is a Flask based web application designed to reduce food waste by connecting food donors, NGOs, and administrators on a single platform. The system allows users to donate excess food, enables NGOs to view and collect donations, and provides administrators with tools to manage and monitor all activities.
 
-The project uses Python (Flask) for backend development and CSV files as a lightweight database system to store all data including users, donations, messages, and contact information.
+The project is developed using Python with the Flask framework for backend development. It uses CSV files as a lightweight database system to store all application data including users, food donations, messages, and contact information.
 
-Project Features:
+Project Features
 
-The system supports user registration and login with different roles such as donor, NGO, and admin. Donors can add food donation details including food item, quantity, location, and reason for waste. NGOs can view available donations and mark them as picked up once collected.
+The system supports user registration and login with different roles such as donor, NGO, and administrator. Donors can submit food donation details including food item, quantity, location, and reason for waste.
 
-The system also includes a messaging feature where notifications are sent to NGOs when new users register or when donations are marked for pickup. A contact form is available for users to send queries or feedback.
+NGOs can view available donations and mark them as picked up once the food is collected. The system automatically updates the status of each donation to ensure proper tracking.
 
-File upload functionality is implemented to allow users to upload food images and acknowledgment documents. The system also generates PDF acknowledgment slips automatically after successful pickup of food donations.
+A messaging feature is included to send notifications to NGOs when new users register or when donations are marked as picked up. A contact form is also available for users to send queries or feedback.
 
-All data is stored in CSV files which act as a simple database system. Separate files are maintained for users, donations, messages, contact forms, and lab test data.
+The system provides file upload functionality to allow users to upload food images and acknowledgment documents. After a successful pickup, the system generates a PDF acknowledgment slip automatically for record keeping.
 
-Technologies Used:
+Technologies Used
 
-Python is used as the main programming language. Flask is used for backend development and API creation. Flask-CORS is used for handling cross-origin requests. CSV files are used for data storage instead of a traditional database. FPDF library is used for generating PDF acknowledgment slips. Werkzeug is used for secure file uploads.
+The project is built using Python as the main programming language. Flask is used for backend development and API creation. Flask CORS is used to handle cross origin requests. CSV files are used as the database system instead of a traditional database. The FPDF library is used for generating PDF acknowledgment slips. Werkzeug is used for secure file upload handling.
 
-Project Structure:
+Project Structure
 
-The project contains the main Flask application file, a CSV folder to store all data files, and an uploads folder to store images and documents. Each CSV file is used for a specific purpose such as storing waste data, user information, messages, and contact form submissions.
+The project consists of a main Flask application file, a CSV folder that stores all data files, and an uploads folder used for storing images and documents.
 
-How the System Works:
+Each CSV file is used for a specific purpose such as storing user information, food donation records, messages, contact form submissions, and lab test data.
 
-Users first register and log in based on their role. Donors submit food donation details through the system. NGOs can view available donations and request pickups. Once a donation is picked up, the system updates the status and sends notifications. The system also stores uploaded files and generates acknowledgment slips in PDF format.
+How the System Works
 
-Purpose of the Project:
+Users first register and log in according to their roles. Donors submit food donation details through the system. NGOs can view available donations and request pickups.
 
-The main objective of this project is to reduce food waste by efficiently managing excess food distribution. It helps connect donors and NGOs through a digital platform and ensures proper tracking of food donations. The project also helps in understanding real-world backend development, database handling using CSV, and REST API creation.
+Once a donation is marked as picked up, the system updates its status and sends notifications to relevant users. Uploaded files are stored securely and acknowledgment slips are generated in PDF format after successful pickup.
 
-Future Improvements:
+Purpose of the Project
 
-This system can be improved by integrating a proper database like MySQL instead of CSV files. A frontend dashboard can be added for better user experience. Real-time notifications and cloud deployment can also be implemented for scalability.
+The main purpose of this project is to reduce food waste by efficiently managing and distributing excess food. It helps connect donors and NGOs through a centralized digital platform and ensures proper tracking of food donations.
+
+The project also helps in understanding real world backend development, database handling using CSV files, and REST API creation.
+
+Future Improvements
+
+This system can be improved by integrating a proper relational database like MySQL instead of CSV files. A frontend dashboard can also be added to improve user experience.
+
+Other possible improvements include real time notifications, email alerts, and cloud deployment to make the system more scalable and production ready.
