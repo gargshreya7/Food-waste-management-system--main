@@ -1,0 +1,8 @@
+id,food_item,sample_date,status,result
+
+1,bread,2025-09-29,Pending,
+2,Rice,2025-10-01,Pending,
+3,Flour,2025-10-01,Pending,
+4,rice,2025-10-01,Pending,
+5,rice,2025-10-04,Pending,
+6,Vegetables,2025-10-04,Pending,

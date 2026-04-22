@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Waste Management</title>
+    <style>
+        /* Social Media Styles */
+        .social-media {
+            margin-top: 24px;
+            text-align: center;
+        }
+        .social-media h3 {
+            margin-bottom: 10px;
+            color: var(--primary-green);
+        }
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin-bottom: 8px;
+        }
+        .social-icons a {
+            display: inline-block;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(76,175,80,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 44px;
+            height: 44px;
+            line-height: 44px;
+        }
+        .social-icons a:hover {
+            transform: translateY(-4px) scale(1.08);
+            box-shadow: 0 4px 16px rgba(76,175,80,0.18);
+        }
+        .social-icons img {
+            width: 28px;
+            height: 28px;
+            vertical-align: middle;
+            filter: none;
+        }
+        .social-icons .facebook img { filter: invert(27%) sepia(98%) saturate(749%) hue-rotate(182deg) brightness(95%) contrast(92%); }
+        .social-icons .twitter img { filter: invert(48%) sepia(99%) saturate(749%) hue-rotate(175deg) brightness(95%) contrast(92%); }
+        .social-icons .instagram img { filter: invert(36%) sepia(99%) saturate(749%) hue-rotate(314deg) brightness(95%) contrast(92%); }
+        .social-icons .linkedin img { filter: invert(34%) sepia(99%) saturate(749%) hue-rotate(175deg) brightness(95%) contrast(92%); }
+        /* Eco-Friendly Color Palette */
+        :root {
+            --primary-green: #4CAF50; /* A vibrant, eco-friendly green */
+            --secondary-blue: #E8F5E9; /* A very light green/blue for backgrounds */
+            --earthy-accent: #388E3C; /* A darker green for accents and text */
+            --neutral-white: #FFFFFF;
+            --subtle-grey: #F5F5F5; /* Light grey for subtle distinctions */
+            --dark-grey: #212121; /* Dark for text */
+            --accent-yellow: #FFC107; /* A warm accent color */
+            --hover-shadow: rgba(76, 175, 80, 0.4); /* Greenish shadow */
+            --sidebar-bg: #333; /* Dark background for sidebar */
+            --sidebar-text: #FFFFFF; /* White text for sidebar */
+            --sidebar-hover: #555; /* Lighter hover for sidebar */
+        }
+
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--subtle-grey), var(--secondary-blue));
+            color: var(--dark-grey);
+            transition: background-color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background: linear-gradient(135deg, #333, #1a1a1a);
+            color: var(--neutral-white);
+        }
+        body.dark-mode .container { background: #424242; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        body.dark-mode .form-group label { color: var(--accent-yellow); }
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea { background: #555; border-color: #666; color: var(--neutral-white); }
+        body.dark-mode .stat-card { background: #555; }
+        body.dark-mode thead { background: var(--earthy-accent); }
+        body.dark-mode table th,
+        body.dark-mode table td { border-bottom: 1px solid #666; }
+
+        /* Sidebar Navigation */
+        .sidebar-container { display: flex; min-height: 100vh; }
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 220px;
+            height: 100%;
+            background-color: var(--sidebar-bg);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease-in-out;
+        }
+        nav ul { list-style: none; padding: 0; width: 100%; text-align: center; }
+        nav li { margin: 15px 0; }
+        nav a { color: var(--sidebar-text); text-decoration: none; font-weight: bold; padding: 10px 20px; display: block; transition: background-color 0.3s, color 0.3s; border-radius: 5px; }
+        nav a:hover { background-color: var(--sidebar-hover); color: var(--accent-yellow); }
+        #dark-mode-toggle { position: relative; margin-top: auto; margin-bottom: 20px; background: var(--primary-green); color: var(--neutral-white); border: none; padding: 10px 15px; cursor: pointer; border-radius: 20px; font-size: 0.9em; transition: background-color 0.3s; }
+        #dark-mode-toggle:hover { background-color: var(--earthy-accent); }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: 220px;
+            flex-grow: 1;
+            width: calc(100% - 220px);
+            transition: margin-left 0.3s ease-in-out;
+        }
+
+        /* Hamburger Menu & Overlay */
+        .hamburger-menu { display: none; position: fixed; top: 20px; left: 20px; z-index: 1100; background: var(--primary-green); color: var(--neutral-white); border: none; padding: 10px 15px; cursor: pointer; border-radius: 5px; font-size: 1.5em; line-height: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999; }
+        body.menu-open { overflow: hidden; }
+        body.menu-open .overlay { display: block; }
+        body.menu-open nav { transform: translateX(0); }
+
+        /* Sections & Container */
+        .section { display: none; padding: 40px 20px; min-height: 100vh; }
+        .section.active { display: block; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 30px; background: var(--neutral-white); border-radius: 15px; box-shadow: 0 10px 30px var(--hover-shadow); }
+
+        /* Hero & Image Slider */
+        .hero { text-align: center; background: linear-gradient(45deg, var(--primary-green), var(--earthy-accent)); color: var(--neutral-white); padding: 80px 20px; border-radius: 15px; margin-bottom: 30px; }
+        .hero h1 { font-size: 3rem; margin-bottom: 20px; }
+        .image-slider { position: relative; width: 100%; height: 300px; overflow: hidden; border-radius: 10px; }
+        .slider-images { display: flex; width: 300%; animation: slide 12s infinite; } /* Adjusted width for 3 images */
+        .slider-images img { width: 33.333%; height: 300px; object-fit: cover; }
+        @keyframes slide { 0%, 25% { transform: translateX(0%); } 33%, 58% { transform: translateX(-33.333%); } 66%, 92% { transform: translateX(-66.666%); } 100% { transform: translateX(0); } }
+
+        /* Forms & Buttons */
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 5px; color: var(--earthy-accent); font-weight: bold; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 2px solid var(--subtle-grey); border-radius: 8px; transition: border-color 0.3s; font-size: 1em; }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--primary-green); outline: none; }
+        .btn { background: linear-gradient(45deg, var(--primary-green), var(--earthy-accent)); color: var(--neutral-white); border: none; padding: 15px 30px; border-radius: 25px; cursor: pointer; font-size: 16px; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .btn:hover { transform: scale(1.05); box-shadow: 0 6px 12px rgba(0,0,0,0.3); will-change: transform, box-shadow; }
+
+        /* Modals */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { background: var(--neutral-white); padding: 30px; width: 90%; max-width: 500px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative; }
+        .modal-content h2 { color: var(--earthy-accent); margin-bottom: 20px; }
+        .close { position: absolute; top: 10px; right: 20px; cursor: pointer; font-size: 30px; color: #aaa; transition: color 0.3s; }
+        .close:hover { color: #666; }
+
+        /* Dashboard & Table */
+        .dashboard-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: var(--secondary-blue); padding: 20px; border-radius: 10px; text-align: center; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .stat-card h3 { color: var(--earthy-accent); margin-bottom: 10px; }
+        .stat-card p { font-size: 1.8em; font-weight: bold; color: var(--primary-green); }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px var(--hover-shadow); will-change: transform, box-shadow; }
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; margin-top: 20px; border-collapse: collapse; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--subtle-grey); }
+        thead { background: var(--primary-green); color: var(--neutral-white); }
+        tbody tr:nth-child(even) { background-color: var(--secondary-blue); }
+
+        /* Maps & Notifications */
+        iframe { width: 100%; height: 400px; border: none; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .notification { position: fixed; top: 20px; right: 20px; background: var(--primary-green); color: var(--neutral-white); padding: 15px 25px; border-radius: 10px; opacity: 0; transition: opacity 0.3s, transform 0.3s; z-index: 3000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transform: translateY(-20px); }
+        .notification.show { opacity: 1; transform: translateY(0); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav { transform: translateX(-220px); padding-top: 60px; }
+            .main-content { margin-left: 0; width: 100%; padding-top: 80px; }
+            .hamburger-menu { display: block; }
+            .hero h1 { font-size: 2.5rem; }
+            .container { padding: 20px; }
+            .dashboard-stats { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2rem; }
+            .btn { padding: 12px 20px; font-size: 14px; }
+            .hamburger-menu { top: 15px; left: 15px; padding: 8px 12px; font-size: 1.2em; }
+            .main-content { padding-top: 70px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar-container">
+        <button class="hamburger-menu" id="hamburgerBtn">☰</button>
+        <div class="overlay" id="menuOverlay"></div>
+        <nav id="sidebarNav">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li id="nav-login"><a href="#login">Login</a></li>
+                <li id="nav-register"><a href="#register">Register</a></li>
+                <li id="nav-dashboard" style="display: none;"><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#maps">Maps</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li id="nav-logout" style="display: none;"><a href="#" id="logoutBtn">Logout</a></li>
+            </ul>
+            <button id="dark-mode-toggle">Toggle Dark Mode</button>
+        </nav>
+
+        <div class="main-content">
+            <div id="notification" class="notification"></div>
+            <section id="home" class="section active">
+                <div class="hero">
+              <h1>DONATE OUR FOOD HERE!</h1>
+              <img src="https://tse2.mm.bing.net/th/id/OIP.HGiiHhFtTQPNzjqfdt426gHaGi?pid=Api&P=0&h=180"/>
+              <p>Together, we can make a difference in reducing food waste and promoting sustainability.</p>
+               </div>
+                <div class="">
+                    <!-- Donate Button Section -->
+                    <div style="display: flex; justify-content: center; align-items: center; margin-top: 30px;">
+                        <a href="#login" id="donateBtnHome" class="btn" style="background: linear-gradient(45deg, var(--accent-yellow), var(--primary-green)); color: var(--dark-grey); font-weight: bold; min-width: 180px; text-align: center;">Donate Food</a>
+                    </div>
+                </div>
+            </section>
+            <section id="login" class="section">
+                <div class="container">
+                    <h2>Login</h2>
+                    <form id="loginForm">
+                        <div class="form-group"><label>Username:</label><input type="text" id="loginUsername" required></div>
+                        <div class="form-group"><label>Password:</label><input type="password" id="loginPassword" required></div>
+                        <button type="submit" class="btn">Login</button>
+                    </form>
+                    <div style="margin-top:10px;">
+                        <a href="#" id="forgotPasswordLink" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Forgot Password?</a>
+                    </div>
+                    <div id="forgotPasswordModal" class="modal" style="display:none;z-index:2000;">
+                        <div class="modal-content" style="max-width:400px;margin:auto;">
+                            <span class="close" id="closeForgotModal">&times;</span>
+                            <h2>Reset Password</h2>
+                            <form id="forgotForm">
+                                <div class="form-group"><label>Email:</label><input type="email" id="forgotEmail" required></div>
+                                <button type="submit" class="btn">Send Reset Link</button>
+                            </form>
+                            <p id="forgotMessage"></p>
+                        </div>
+                    </div>
+                    <p id="loginMessage"></p>
+                </div>
+            </section>
+            <section id="register" class="section">
+                <div class="container">
+                    <h2>Register</h2>
+                    <form id="registerForm">
+                        <div class="form-group"><label>Name:</label><input type="text" id="regName" required></div>
+                        <div class="form-group"><label>Username:</label><input type="text" id="regUsername" required></div>
+                        <div class="form-group"><label>Password:</label><input type="password" id="regPassword" required></div>
+                        <div class="form-group"><label>Email:</label><input type="email" id="regEmail" required></div>
+                        <div class="form-group"><label>Role:</label><select id="regRole" required><option value="donor">Donor</option><option value="ngo">NGO</option><option value="admin">Admin</option></select></div>
+                        <button type="submit" class="btn">Register</button>
+                    </form>
+                    <p id="registerMessage"></p>
+                </div>
+            </section>
+            <section id="dashboard" class="section">
+                <div class="container">
+                    <h2>Dashboard</h2>
+
+                    <div class="dashboard-stats">
+                        <div class="stat-card"><h3>Total Waste</h3><p id="totalWaste">0 kg</p></div>
+                        <div class="stat-card"><h3>Average Daily</h3><p id="avgWaste">0 kg</p></div>
+                        <div class="stat-card"><h3>Reduction Score</h3><p id="reductionScore">0%</p></div>
+                    </div>
+                    <div style="position: relative; height:300px; width:100%; margin-bottom: 20px;">
+                        <canvas id="wasteChart"></canvas>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <button id="wasteSubmitBtn" class="btn">Add Waste Entry</button>
+                        <button id="clearAllWasteBtn" class="btn" style="background: #f44336;">Clear All Waste Data</button>
+                    </div>
+                    <h3>Recent Waste Entries</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr><th>ID</th><th>Food Item</th><th>Quantity</th><th>Date</th><th>City</th><th style="background:#e0ffe0;color:#1b5e20;font-weight:bold;">State</th><th>Reason for Waste</th><th>Pickup by NGO</th><th>Food Image</th></tr>
+                            </thead>
+                            <tbody id="wasteTableBody"></tbody>
+                        </table>
+                    </div>
+
+                    <hr style="margin: 40px 0 24px 0; border: none; border-top: 2px solid var(--subtle-grey);">
+                    <h3>Lab Testing</h3>
+                    <form id="labTestForm" style="display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 18px;">
+                        <div class="form-group" style="min-width:200px;">
+                            <label for="labFoodItem">Food Item:</label>
+                            <input type="text" id="labFoodItem" required>
+                        </div>
+                        <div class="form-group" style="min-width:180px;">
+                            <label for="labSampleDate">Sample Date:</label>
+                            <input type="date" id="labSampleDate" required>
+                        </div>
+                        <button type="submit" class="btn">Submit for Lab Test</button>
+                    </form>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr><th>ID</th><th>Food Item</th><th>Sample Date</th><th>Status</th><th>Result</th></tr>
+                            </thead>
+                            <tbody id="labTestTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <section id="about" class="section">
+                <div class="container">
+                    <h2>About EcoWaste Tracker</h2>
+                    <p><strong>EcoWaste Tracker</strong> is an innovative food waste management system designed to help individuals, organizations, and communities reduce food waste and promote sustainability. Our platform leverages technology and community engagement to make a real impact on food waste reduction.</p>
+                    <ul>
+                        <li><strong>Track Food Waste:</strong> Users can log and monitor their food waste, helping them identify patterns and areas for improvement.</li>
+                        <li><strong>Data-Driven Insights:</strong> The dashboard provides statistics and visualizations to help users understand their food waste habits and progress over time.</li>
+                        <li><strong>Community Engagement:</strong> Connect with local organizations, donate surplus food, and participate in community-driven initiatives to fight hunger and reduce waste.</li>
+                        <li><strong>Educational Resources:</strong> Access tips, articles, and best practices for minimizing food waste at home, in businesses, and across communities.</li>
+                        <li><strong>Environmental Impact:</strong> By reducing food waste, users contribute to lowering greenhouse gas emissions and conserving resources, making a positive impact on the planet.</li>
+                    </ul>
+                    <p>Join us in our mission to create a more sustainable future by making conscious choices and working together to eliminate food waste!</p>
+                    <div class="social-media">
+                        <h3>Connect with EcoWaste Tracker</h3>
+                        <div class="social-icons">
+                            <a class="facebook" href="https://facebook.com" target="_blank" title="Facebook"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook"></a>
+                            <a class="twitter" href="https://twitter.com" target="_blank" title="Twitter"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/twitter.svg" alt="Twitter"></a>
+                            <a class="instagram" href="https://instagram.com" target="_blank" title="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram"></a>
+                            <a class="linkedin" href="https://linkedin.com" target="_blank" title="LinkedIn"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn"></a>
+                        </div>
+                        <div style="font-size:1em; color:var(--earthy-accent); margin-top:4px;">Follow us for updates, tips, and community stories!</div>
+                    </div>
+                </div>
+            </section>
+            <section id="maps" class="section">
+                <div class="container">
+                    <h2>Nearby NGOs, Restaurants & Recycling Points</h2>
+                    <div style="display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; align-items: flex-start;">
+                        <div style="flex:1 1 320px; min-width:320px; max-width:480px;">
+                            <h3 style="margin-bottom:8px; color:var(--primary-green);">NGOs</h3>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d60529.58474246876!2d73.82424096953123!3d18.520430300000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sNGO!5e0!3m2!1sen!2sin!4v1727567756776!5m2!1sen!2sin" width="100%" height="220" style="border:0; border-radius:10px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                        <div style="flex:1 1 320px; min-width:320px; max-width:480px;">
+                            <h3 style="margin-bottom:8px; color:var(--primary-green);">Restaurants</h3>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d60529.58474246876!2d73.82424096953123!3d18.520430300000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1srestaurant!5e0!3m2!1sen!2sin!4v1728567756776!5m2!1sen!2sin" width="100%" height="220" style="border:0; border-radius:10px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+                    <div style="margin-top:18px; text-align:center; font-size:1em; color:var(--earthy-accent);">
+                        <strong>Legend:</strong> <span style="color:var(--primary-green);">NGO</span>, <span style="color:#ff9800;">Restaurant</span>
+                    </div>
+                </div>
+            </section>
+            <section id="contact" class="section">
+                <div class="container">
+                    <h2>Contact Us</h2>
+                    <form id="contactForm">
+                        <div class="form-group"><label>Name:</label><input type="text" required></div>
+                        <div class="form-group"><label>Email:</label><input type="email" required></div>
+                        <div class="form-group"><label>Message:</label><textarea rows="5" required></textarea></div>
+                        <button type="submit" class="btn">Send Message</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div id="wasteModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <h2>Add Waste Entry</h2>
+            <form id="wasteForm">
+                <div class="form-group"><label>Food Item:</label><input type="text" id="foodItem" required></div>
+                <div class="form-group"><label>Quantity (kg):</label><input type="number" id="quantity" required min="0.01" step="0.01"></div>
+                <div class="form-group"><label>Waste Date:</label><input type="date" id="wasteDate" required></div>
+                <div class="form-group"><label>City:</label><input type="text" id="wasteCity" required></div>
+                <div class="form-group"><label>State:</label><input type="text" id="wasteState" required></div>
+                <div class="form-group"><label>Reason:</label><textarea id="wasteReason" rows="3"></textarea></div>
+                <button type="submit" class="btn">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Forgot Password Modal logic
+            const forgotLink = document.getElementById('forgotPasswordLink');
+            const forgotModal = document.getElementById('forgotPasswordModal');
+            const closeForgot = document.getElementById('closeForgotModal');
+            forgotLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                forgotModal.style.display = 'flex';
+            });
+            closeForgot.addEventListener('click', function() {
+                forgotModal.style.display = 'none';
+            });
+            document.getElementById('forgotForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('forgotEmail').value;
+                // Simulate sending reset link (backend integration needed)
+                document.getElementById('forgotMessage').textContent = 'If this email is registered, a reset link will be sent.';
+            });
+            window.onclick = function(event) {
+                if (event.target === forgotModal) forgotModal.style.display = 'none';
+            }
+            // Lab Testing: Load and display lab test results
+            function loadLabTests() {
+                fetch(`${API_BASE}/lab_tests`)
+                    .then(res => res.json())
+                    .then(data => {
+                        const tbody = document.getElementById('labTestTableBody');
+                        tbody.innerHTML = '';
+                        data.forEach(test => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${test.id}</td>
+                                <td>${test.food_item}</td>
+                                <td>${test.sample_date}</td>
+                                <td>${test.status}</td>
+                                <td>${test.result || '-'}</td>
+                            `;
+                            tbody.appendChild(row);
+                        });
+                    });
+            }
+
+            // Lab Testing: Handle form submission
+            const labTestForm = document.getElementById('labTestForm');
+            if (labTestForm) {
+                labTestForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const foodItem = document.getElementById('labFoodItem').value;
+                    const sampleDate = document.getElementById('labSampleDate').value;
+                    fetch(`${API_BASE}/lab_tests`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ food_item: foodItem, sample_date: sampleDate })
+                    })
+                    .then(res => res.json())
+                    .then(result => {
+                        if (result.status === 'submitted') {
+                            showNotification('Lab test submitted!');
+                            labTestForm.reset();
+                            loadLabTests();
+                        } else {
+                            showNotification('Failed to submit lab test.');
+                        }
+                    })
+                    .catch(() => showNotification('Error submitting lab test.'));
+                });
+            }
+            const body = document.body;
+            let wasteData = [];
+            let currentUser = null;
+            let myWasteChart = null;
+            const API_BASE = 'http://127.0.0.1:5000/api';
+
+            // Element Cache
+            const DOMElements = {
+                hamburgerBtn: document.getElementById('hamburgerBtn'),
+                sidebarNav: document.getElementById('sidebarNav'),
+                menuOverlay: document.getElementById('menuOverlay'),
+                darkModeToggle: document.getElementById('dark-mode-toggle'),
+                wasteModal: document.getElementById('wasteModal'),
+                wasteTableBody: document.getElementById('wasteTableBody'),
+                // ... cache other frequently accessed elements
+            };
+
+            // Hide donate button except on home section
+            const donateBtnHome = document.getElementById('donateBtnHome');
+            function updateDonateBtnVisibility() {
+                if (donateBtnHome) {
+                    donateBtnHome.style.display = document.querySelector('#home').classList.contains('active') ? 'block' : 'none';
+                }
+            }
+
+            const toggleMobileMenu = () => body.classList.toggle('menu-open');
+
+            const showNotification = (msg) => {
+                const notif = document.getElementById('notification');
+                notif.textContent = msg;
+                notif.classList.add('show');
+                setTimeout(() => notif.classList.remove('show'), 3000);
+            };
+
+            const updateNavVisibility = () => {
+                const isLoggedIn = !!currentUser;
+                document.getElementById('nav-login').style.display = isLoggedIn ? 'none' : 'block';
+                document.getElementById('nav-register').style.display = isLoggedIn ? 'none' : 'block';
+                document.getElementById('nav-dashboard').style.display = isLoggedIn ? 'block' : 'none';
+                document.getElementById('nav-logout').style.display = isLoggedIn ? 'block' : 'none';
+            };
+
+            const navigateTo = (hash) => {
+                const target = document.querySelector(hash);
+                if (target) {
+                    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                    target.classList.add('active');
+                    updateDonateBtnVisibility();
+                }
+            };
+            
+            const loadDashboard = () => {
+                // Fetch waste data from backend
+                fetch(`${API_BASE}/waste`)
+                    .then(res => res.json())
+                    .then(data => {
+                        wasteData = data.map(entry => ({
+                            ...entry,
+                            id: parseInt(entry.id),
+                            quantity: parseFloat(entry.quantity)
+                        }));
+                        // Food Expiry Alerts
+                        if (currentUser && currentUser.role && currentUser.role.toLowerCase() === 'donor') {
+                            const today = new Date();
+                            let soonExpiring = [];
+                            wasteData.forEach(entry => {
+                                if (entry.waste_date) {
+                                    const entryDate = new Date(entry.waste_date);
+                                    const diffDays = Math.ceil((entryDate - today) / (1000 * 60 * 60 * 24));
+                                    if (diffDays >= 0 && diffDays <= 1) {
+                                        soonExpiring.push(entry);
+                                    }
+                                }
+                            });
+                            if (soonExpiring.length > 0) {
+                                showNotification(`Food expiry alert: You have ${soonExpiring.length} food entr${soonExpiring.length > 1 ? 'ies' : 'y'} expiring soon!`);
+                            }
+                        }
+                        const fragment = document.createDocumentFragment();
+                        let total = 0;
+                        const dailyWaste = {};
+                        wasteData.forEach(entry => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${entry.id}</td>
+                                <td>${entry.food_item}</td>
+                                <td>${entry.quantity.toFixed(2)} kg</td>
+                                <td>${entry.waste_date}</td>
+                                <td>${entry.city ? entry.city : '<span style="color:#aaa;">No City</span>'}</td>
+                                <td style="background:#e0ffe0;color:#1b5e20;font-weight:bold;">${entry.state ? entry.state : '<span style="color:#aaa;">No State</span>'}</td>
+                                <td>${entry.waste_reason || entry.reason || ''}</td>
+                                <td><button class="btn btn-pickup" data-id="${entry.id}" style="background:#1976d2;color:#fff;padding:4px 12px;font-size:0.95em;border-radius:4px;">Pickup</button></td>
+                                <td><input type="file" class="food-image-upload" data-id="${entry.id}" accept="image/*"><button class="btn btn-upload-image" data-id="${entry.id}" style="margin-top:4px;">Upload</button><div class="food-image-link" data-id="${entry.id}"></div></td>
+                            `;
+            // File upload handlers for food image and ack slip
+            document.getElementById('wasteTableBody').addEventListener('click', function(e) {
+                // Food image upload
+                if (e.target.classList.contains('btn-upload-image')) {
+                    const id = e.target.getAttribute('data-id');
+                    const fileInput = document.querySelector(`input.food-image-upload[data-id='${id}']`);
+                    if (fileInput && fileInput.files.length > 0) {
+                        const formData = new FormData();
+                        formData.append('file', fileInput.files[0]);
+                        fetch(`${API_BASE}/waste/${id}/upload_image`, { method: 'POST', body: formData })
+                            .then(res => res.json())
+                            .then(result => {
+                                if (result.status === 'success') {
+                                    document.querySelector(`div.food-image-link[data-id='${id}']`).innerHTML = `<a href="/uploads/${result.filename}" target="_blank">View</a>`;
+                                    showNotification('Image uploaded!');
+                                } else {
+                                    showNotification('Upload failed.');
+                                }
+                            })
+                            .catch(() => showNotification('Upload error.'));
+                    } else {
+                        showNotification('Select an image file first.');
+                    }
+                }
+            });
+                            fragment.appendChild(row);
+            // Event delegation for delete buttons in waste table
+            document.getElementById('wasteTableBody').addEventListener('click', function(e) {
+                if (e.target.classList.contains('btn-delete')) {
+                    const id = e.target.getAttribute('data-id');
+                    if (id) deleteWasteEntry(id);
+                }
+                if (e.target.classList.contains('btn-pickup')) {
+                    const id = e.target.getAttribute('data-id');
+                    fetch(`${API_BASE}/waste/${id}/pickup`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' }
+                    })
+                    .then(res => res.json())
+                    .then(result => {
+                        if (result.status === 'picked_up') {
+                            e.target.textContent = 'Picked Up';
+                            e.target.disabled = true;
+                            e.target.style.background = '#43a047';
+                            showNotification('NGO will pick up this entry!');
+                        } else {
+                            showNotification('Failed to mark as picked up.');
+                        }
+                    })
+                    .catch(() => showNotification('Error marking as picked up.'));
+                }
+            });
+                            total += entry.quantity;
+                            dailyWaste[entry.waste_date] = (dailyWaste[entry.waste_date] || 0) + entry.quantity;
+                        });
+                        DOMElements.wasteTableBody.innerHTML = '';
+                        DOMElements.wasteTableBody.appendChild(fragment);
+                        document.getElementById('totalWaste').textContent = `${total.toFixed(2)} kg`;
+                        const uniqueDates = Object.keys(dailyWaste).length;
+                        document.getElementById('avgWaste').textContent = `${uniqueDates ? (total / uniqueDates).toFixed(2) : 0} kg`;
+                        const reductionPercentage = total > 50 ? '35%' : '85%';
+                        document.getElementById('reductionScore').textContent = reductionPercentage;
+                        updateChart(dailyWaste);
+                    });
+            };
+
+            const updateChart = (dailyWaste) => {
+                const ctx = document.getElementById('wasteChart').getContext('2d');
+                if (myWasteChart) {
+                    myWasteChart.destroy();
+                }
+
+                const sortedDates = Object.keys(dailyWaste).sort((a, b) => new Date(a) - new Date(b));
+                const chartLabels = sortedDates;
+                const chartData = sortedDates.map(date => dailyWaste[date]);
+
+                myWasteChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: chartLabels,
+                        datasets: [{
+                            label: 'Daily Waste (kg)',
+                            data: chartData,
+                            borderColor: 'var(--primary-green)',
+                            backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                            tension: 0.3,
+                            fill: true,
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+                });
+            };
+            
+            const deleteWasteEntry = (id) => {
+                if (confirm('Are you sure you want to delete this waste entry?')) {
+                    fetch(`${API_BASE}/waste/${id}`, {
+                        method: 'DELETE'
+                    })
+                    .then(res => res.json())
+                    .then(result => {
+                        if (result.status === 'deleted') {
+                            showNotification('Waste entry deleted!');
+                            loadDashboard();
+                        } else {
+                            showNotification('Failed to delete waste entry.');
+                        }
+                    })
+                    .catch(() => showNotification('Error deleting waste entry.'));
+                }
+            };
+
+            // Event Listeners Setup
+            DOMElements.hamburgerBtn.addEventListener('click', toggleMobileMenu);
+            DOMElements.menuOverlay.addEventListener('click', toggleMobileMenu);
+
+            DOMElements.sidebarNav.addEventListener('click', e => {
+                if (e.target.tagName === 'A' && e.target.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    if (e.target.id === 'logoutBtn') {
+                        currentUser = null;
+                        localStorage.removeItem('currentUser');
+                        showNotification('Logged out successfully!');
+                        updateNavVisibility();
+                        navigateTo('#home');
+                    } else {
+                        navigateTo(e.target.getAttribute('href'));
+                    }
+                    if (body.classList.contains('menu-open')) toggleMobileMenu();
+                }
+            });
+
+            DOMElements.darkModeToggle.addEventListener('click', () => body.classList.toggle('dark-mode'));
+            document.getElementById('wasteSubmitBtn').addEventListener('click', () => DOMElements.wasteModal.style.display = 'flex');
+            DOMElements.wasteModal.querySelector('.close').addEventListener('click', () => DOMElements.wasteModal.style.display = 'none');
+            
+            document.getElementById('loginForm').addEventListener('submit', e => {
+                e.preventDefault();
+                const username = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+                fetch(`${API_BASE}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                })
+                .then(res => res.json())
+                .then(result => {
+                    if (result.status === 'success') {
+                        currentUser = result.user;
+                        showNotification('Logged in successfully!');
+                        updateNavVisibility();
+                        navigateTo('#dashboard');
+                    } else {
+                        document.getElementById('loginMessage').textContent = result.message || 'Login failed';
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('loginMessage').textContent = 'Login error';
+                });
+            });
+            
+            document.getElementById('wasteForm').addEventListener('submit', e => {
+                                e.preventDefault();
+                                // Get latest wasteData to determine new id
+                                fetch(`${API_BASE}/waste`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        const newId = data.length ? Math.max(...data.map(item => parseInt(item.id))) + 1 : 1;
+                                        const entry = {
+                                                id: newId,
+                                                food_item: document.getElementById('foodItem').value,
+                                                quantity: parseFloat(document.getElementById('quantity').value),
+                                                waste_date: document.getElementById('wasteDate').value,
+                                                city: document.getElementById('wasteCity').value,
+                                                state: document.getElementById('wasteState').value,
+                                                waste_reason: document.getElementById('wasteReason').value
+                                        };
+                                        fetch(`${API_BASE}/waste`, {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify(entry)
+                                        })
+                                        .then(res => res.json())
+                                        .then(() => {
+                                                loadDashboard();
+                                                DOMElements.wasteModal.style.display = 'none';
+                                                showNotification('Waste entry added!');
+                                                e.target.reset();
+                                        });
+                                    });
+            });
+            
+            // **OPTIMIZATION**: Using event delegation for delete buttons
+            // Delete not supported in backend version
+
+            document.getElementById('clearAllWasteBtn').addEventListener('click', () => {
+                if (confirm('Are you sure you want to clear all waste entries? This action cannot be undone.')) {
+                    fetch(`${API_BASE}/clear_csv`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ csv_type: 'waste' })
+                    })
+                    .then(res => res.json())
+                    .then(result => {
+                        if (result.status === 'cleared') {
+                            showNotification('All waste entries cleared!');
+                            loadDashboard();
+                        } else {
+                            showNotification('Failed to clear waste entries.');
+                        }
+                    })
+                    .catch(() => showNotification('Error clearing waste entries.'));
+                }
+            });
+
+            // Register form handler (moved outside so it always runs)
+            document.getElementById('registerForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Get latest users to determine new id
+                fetch(`${API_BASE}/users`)
+                  .then(res => res.json())
+                  .then(users => {
+                    const newId = users.length ? Math.max(...users.map(u => parseInt(u.id))) + 1 : 1;
+                    const entry = {
+                        id: newId,
+                        name: document.getElementById('regName').value,
+                        username: document.getElementById('regUsername').value,
+                        password: document.getElementById('regPassword').value,
+                        email: document.getElementById('regEmail').value,
+                        role: document.getElementById('regRole').value
+                    };
+                    fetch(`${API_BASE}/register`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(entry)
+                    })
+                    .then(res => res.json())
+                    .then(() => {
+                        document.getElementById('registerMessage').textContent = 'Registration successful!';
+                        e.target.reset();
+                    });
+                  });
+            });
+
+            // Make Donate Food button open login section
+            if (donateBtnHome) {
+                donateBtnHome.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navigateTo('#login');
+                });
+            }
+
+            // Initial Load
+            updateNavVisibility();
+            navigateTo(location.hash || '#home');
+            loadDashboard();
+            loadLabTests();
+            updateDonateBtnVisibility();
+        });
+    </script>
+    <footer style="text-align:center; padding:20px 0; background:var(--subtle-grey); color:var(--dark-grey); margin-top:40px;">
+        <div class="social-media">
+            <div class="social-icons" style="margin-bottom:6px;">
+                <a class="facebook" href="https://facebook.com" target="_blank" title="Facebook"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook"></a>
+                <a class="twitter" href="https://twitter.com" target="_blank" title="Twitter"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/twitter.svg" alt="Twitter"></a>
+                <a class="instagram" href="https://instagram.com" target="_blank" title="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram"></a>
+                <a class="linkedin" href="https://linkedin.com" target="_blank" title="LinkedIn"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn"></a>
+            </div>
+            <div style="font-size:0.98em; color:var(--earthy-accent);">Stay connected with us on social media!</div>
+        </div>
+        <div style="margin-top:10px; font-size:0.95em;">&copy; 2025 EcoWaste Tracker. All rights reserved.</div>
+    </footer>
+</body>
+</html>
